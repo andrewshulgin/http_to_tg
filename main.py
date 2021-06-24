@@ -13,9 +13,9 @@ from aiogram.dispatcher.webhook import SendMessage
 from aiogram.utils.executor import set_webhook
 
 API_TOKEN = os.environ['TELEGRAM_TOKEN']
-WEBHOOK_HOST = os.environ['WEBHOOK_HOST']
+EXTERNAL_BASE_URL = os.environ['WEBHOOK_HOST']
 WEBHOOK_PATH = os.environ.get('WEBHOOK_PATH', '/webhook')
-WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
+WEBHOOK_URL = f'{EXTERNAL_BASE_URL}{WEBHOOK_PATH}'
 DATABASE_PATH = os.environ.get('DATABASE_PATH', '/mnt/data/http_to_tg.db')
 
 LISTEN_HOST = '0.0.0.0'
