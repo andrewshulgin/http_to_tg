@@ -13,8 +13,8 @@ from aiogram.dispatcher.webhook import SendMessage
 from aiogram.utils.executor import set_webhook
 
 API_TOKEN = os.environ['TELEGRAM_TOKEN']
-WEBHOOK_HOST = 'https://tg.rmrf.co'
-WEBHOOK_PATH = '/webhook'
+WEBHOOK_HOST = os.environ['WEBHOOK_HOST']
+WEBHOOK_PATH = os.environ.get('WEBHOOK_PATH', '/webhook')
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 DATABASE_PATH = os.environ.get('DATABASE_PATH', '/mnt/data/http_to_tg.db')
 
