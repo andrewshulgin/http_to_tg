@@ -60,10 +60,14 @@ async def handler(message: types.Message):
 @dp.message_handler(commands=['alias'])
 async def handler(message: types.Message):
     cursor = db.cursor()
-    token, alias = message.get_args().split(maxsplit=1)
-    cursor.execute('UPDATE tokens SET alias = ? WHERE token = ? AND chat = ?', (alias, token, message.chat.id))
-    db.commit()
-    return SendMessage(message.chat.id, f'Changed: {alias}:{token}')
+    try:
+        token, alias = message.get_args().split(maxsplit=1)
+    except ValueError:
+        return SendMessage(message.chat.id, 'Usage: /alias <token> <alias>')
+    else:
+        cursor.execute('UPDATE tokens SET alias = ? WHERE token = ? AND chat = ?', (alias, token, message.chat.id))
+        db.commit()
+        return SendMessage(message.chat.id, f'Changed: {alias}:{token}')
 
 
 @dp.message_handler(commands=['tokens'])
@@ -89,23 +93,12 @@ async def on_startup(dp_):
     await bot.set_webhook(WEBHOOK_URL)
     cursor = db.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS tokens (alias, token, chat)')
-    # insert code here to run it after start
 
 
 async def on_shutdown(dp_):
     logging.warning('Shutting down...')
-
-    # insert code here to run it before shutdown
-
-    # Remove webhook (not acceptable in some cases)
     await bot.delete_webhook()
-
     db.close()
-
-    # Close DB connection (if used)
-    await dp_.storage.close()
-    await dp_.storage.wait_closed()
-
     logging.warning('Bye!')
 
 
